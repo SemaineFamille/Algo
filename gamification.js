@@ -1,3 +1,4 @@
+console.log("🎮 gamification.js chargé");
 function initGamification() {
   const container = document.getElementById("gamification-container");
   if (!container) return;
