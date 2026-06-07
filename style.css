@@ -59,17 +59,62 @@ body {
 }
 /*<!-- GAMIFICATION -->*/
 
-.reward-card{
-  background:white;
-  border-radius:20px;
-  padding:16px;
-  margin:15px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.1);
-  text-align:center;
+.gamification-card{
+  margin: 15px;
 }
 
-.reward-card h3{
-  margin-top:0;
+.gamification-big{
+  background: linear-gradient(135deg, #9C27B0, #673AB7);
+  color: white;
+  border-radius: 25px;
+  padding: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.gamification-big:active{
+  transform: scale(0.98);
+}
+
+.gamification-header{
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.gamification-header .title{
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.gamification-header .subtitle{
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.gamification-stats{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.stat{
+  flex: 1;
+  text-align: center;
+}
+
+.stat .icon{
+  font-size: 1.4rem;
+}
+
+.stat .value{
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.stat .label{
+  font-size: 0.75rem;
+  opacity: 0.9;
 }
 
 
