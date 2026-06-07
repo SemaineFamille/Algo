@@ -23,68 +23,16 @@ function initGamification() {
 ========================= */
 
   
-function openRewards() {
+window.openRewards = function () {
   document.getElementById("rewardsModal").classList.remove("hidden");
   renderRewards();
-}
+};
 
-function closeRewards() {
+window.closeRewards = function () {
   document.getElementById("rewardsModal").classList.add("hidden");
-}
+};
 
-function getUser() {
-  return localStorage.getItem("user") || "joueur";
-}
-
-function getPoints() {
-  const user = getUser();
-  return parseInt(localStorage.getItem("points_" + user)) || 0;
-}
-
-function setPoints(value) {
-  const user = getUser();
-  localStorage.setItem("points_" + user, value);
-  initGamification();
-}
-
-function renderRewards() {
-  const user = getUser();
-
-  document.getElementById("rewards-user").innerText = "👤 " + user;
-  document.getElementById("rewards-points").innerText = "⭐ Points : " + getPoints();
-
-  const shop = document.getElementById("rewards-shop");
-  shop.innerHTML = "";
-
-  REWARDS.forEach(r => {
-    const btn = document.createElement("button");
-
-    btn.className = "reward-item";
-    btn.innerHTML = `${r.name} <br><strong>${r.cost} ⭐</strong>`;
-
-    btn.onclick = () => buyReward(r);
-
-    shop.appendChild(btn);
-  });
-}
-
-function buyReward(reward) {
-  let points = getPoints();
-
-  if (points < reward.cost) {
-    alert("Pas assez de points !");
-    return;
-  }
-
-  points -= reward.cost;
-  setPoints(points);
-
-  alert("Récompense achetée : " + reward.name);
-}
-/* =========================
-   COFFRE DU JOUR 🎁
-========================= */
-function openChest() {
+window.openChest = function () {
   const user = getUser();
   const key = "chest_" + user + "_" + new Date().toDateString();
 
@@ -104,7 +52,7 @@ function openChest() {
 
   document.getElementById("chest-result").innerText =
     "🎉 +" + reward + " points !";
-}
+};
   
   container.innerHTML = `
     <div class="gamification-big" onclick="openRewards()">
