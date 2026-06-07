@@ -308,5 +308,30 @@
 
 <script src="app.js"></script>
 <script src="gamification.js"></script>
+<!-- gamification -->
+ <div id="rewardsModal" class="rewards-modal hidden">
+  <div class="rewards-content">
+
+    <div class="rewards-header">
+      <h2>🏆 Récompenses</h2>
+      <button class="close-btn" onclick="closeRewards()">✖</button>
+    </div>
+
+    <div class="rewards-stats">
+      <div id="rewards-user"></div>
+      <div id="rewards-points"></div>
+      <div id="rewards-streak"></div>
+    </div>
+
+    <h3>🎁 Boutique de récompenses</h3>
+
+    <div class="rewards-shop" id="rewards-shop"></div>
+
+    <h3>🎁 Coffre du jour</h3>
+    <button class="chest-btn" onclick="openChest()">Ouvrir le coffre</button>
+    <div id="chest-result"></div>
+
+  </div>
+</div>
 </body>
 </html>
