@@ -1,7 +1,8 @@
-  /* =========================
-   CONFIG / DONNÉES
-========================= */
 console.log("🎮 gamification.js chargé");
+
+/* =========================
+   CONFIG
+========================= */
 
 const REWARDS = [
   { name: "🍰 Choisir le dessert", cost: 10 },
@@ -10,9 +11,14 @@ const REWARDS = [
   { name: "🛏️ Matin tranquille", cost: 15 },
   { name: "🎲 Activité familiale", cost: 30 }
 ];
+
+const CHALLENGES_KEY = "family_challenges";
+
+
 /* =========================
-   UTILITAIRES
+   UTILISATEUR / POINTS
 ========================= */
+
 function getUser() {
   return localStorage.getItem("user") || "joueur";
 }
@@ -27,9 +33,12 @@ function setPoints(value) {
   localStorage.setItem("points_" + user, value);
   initGamification();
 }
+
+
 /* =========================
-   Fonctions
+   MODAL RÉCOMPENSES
 ========================= */
+
 window.openRewards = function () {
   document.getElementById("rewardsModal").classList.remove("hidden");
   renderRewards();
@@ -38,17 +47,21 @@ window.openRewards = function () {
 window.closeRewards = function () {
   document.getElementById("rewardsModal").classList.add("hidden");
 };
+
+
 /* =========================
-  SHOP
+   BOUTIQUE
 ========================= */
+
 function renderRewards() {
   const user = getUser();
 
   document.getElementById("rewards-user").innerText = "👤 " + user;
-  document.getElementById("rewards-points").innerText =
-    "⭐ Points : " + getPoints();
+  document.getElementById("rewards-points").innerText = "⭐ Points : " + getPoints();
 
   const shop = document.getElementById("rewards-shop");
+  if (!shop) return;
+
   shop.innerHTML = "";
 
   REWARDS.forEach(r => {
@@ -72,11 +85,15 @@ function buyReward(reward) {
   }
 
   setPoints(points - reward.cost);
-  alert("Récompense achetée : " + reward.name);
+
+  alert("🎁 Récompense achetée : " + reward.name);
 }
+
+
 /* =========================
-  Coffre
+   COFFRE DU JOUR
 ========================= */
+
 window.openChest = function () {
   const user = getUser();
   const key = "chest_" + user + "_" + new Date().toDateString();
@@ -96,9 +113,83 @@ window.openChest = function () {
   document.getElementById("chest-result").innerText =
     "🎉 +" + reward + " points !";
 };
+
+
 /* =========================
-  INIT
+   CHALLENGES À 2 👥
 ========================= */
+
+function getChallenges() {
+  return JSON.parse(localStorage.getItem(CHALLENGES_KEY)) || [];
+}
+
+function saveChallenges(list) {
+  localStorage.setItem(CHALLENGES_KEY, JSON.stringify(list));
+}
+
+window.createChallenge = function (user1, user2, title) {
+  const challenges = getChallenges();
+
+  challenges.push({
+    id: "ch_" + Date.now(),
+    users: [user1, user2],
+    title: title,
+    status: "pending",
+    points: 10,
+    createdBy: user1
+  });
+
+  saveChallenges(challenges);
+  renderChallenges();
+};
+
+window.completeChallenge = function (id) {
+  const challenges = getChallenges();
+
+  const ch = challenges.find(c => c.id === id);
+  if (!ch) return;
+
+  ch.status = "done";
+
+  ch.users.forEach(u => {
+    let p = parseInt(localStorage.getItem("points_" + u)) || 0;
+    localStorage.setItem("points_" + u, p + ch.points);
+  });
+
+  saveChallenges(challenges);
+  renderChallenges();
+};
+
+function renderChallenges() {
+  const container = document.getElementById("challenges-container");
+  if (!container) return;
+
+  const challenges = getChallenges();
+
+  container.innerHTML = challenges.map(c => `
+    <div class="challenge-card">
+
+      <h3>🤝 ${c.title}</h3>
+
+      <p>👥 ${c.users.join(" + ")}</p>
+
+      <p>📊 ${c.status}</p>
+
+      ${c.status !== "done" ? `
+        <button onclick="completeChallenge('${c.id}')">
+          ✅ Terminer
+        </button>
+      ` : `<strong>🏆 Terminé</strong>`}
+
+    </div>
+  `).join("");
+}
+
+
+/* =========================
+   INIT
+========================= */
+
 function initGamification() {
   const container = document.getElementById("gamification-container");
   if (!container) return;
@@ -115,6 +206,7 @@ function initGamification() {
       </div>
 
       <div class="gamification-stats">
+
         <div class="stat">
           <div class="icon">⭐</div>
           <div class="value">${points}</div>
@@ -132,10 +224,13 @@ function initGamification() {
           <div class="value">+</div>
           <div class="label">Coffre</div>
         </div>
+
       </div>
 
     </div>
   `;
+
+  renderChallenges();
 }
 
 document.addEventListener("DOMContentLoaded", initGamification);
