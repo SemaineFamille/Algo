@@ -20,7 +20,7 @@ const CHALLENGES_KEY = "family_challenges";
 ========================= */
 
 function getUser() {
-  return localStorage.getItem("user") || "joueur";
+  return currentUser;
 }
 
 function getPoints() {
