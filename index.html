@@ -1,6 +1,308 @@
+<div style="background:red;color:white;padding:10px;text-align:center;">
+🧪 VERSION TEST - BETA
+</div>
+
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+<head>
+ 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Semaine Famille</title>
+
+  <!-- Manifest PWA  -->
+  <link rel="manifest" href="/semaine-famille/manifest.json">
+  
+  <!-- Couleur Android -->
+  <meta name="theme-color" content="#9C27B0">
+
+  <!-- iOS (ok de garder) -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Famille">
+    
+<!-- Icône pour iPhone/iPad -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%239C27B0'/><text y='72' x='50' text-anchor='middle' font-size='60'>⭐</text></svg>">
+
+<!-- Manifest PWA -->
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+  
+
+</head>
 <body>
-<h1>Version Beta</h1>
+
+<!-- ÉCRAN DE LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-logo">⭐</div>
+  <div class="login-title">Semaine Famille</div>
+  <div class="login-sub">Qui es-tu ?</div>
+  
+  <div class="login-grid">
+   
+  <button class="login-btn" style="background:linear-gradient(135deg,#E91E63,#9C27B0);color:white" onclick="login('Alessia')">
+   <span class="badge" id="badge_alessia"></span> 
+   <span class="avatar">👧🦄</span>Alessia
+  </button>
+
+  <button class="login-btn" style="background:linear-gradient(135deg,#2196F3,#00BCD4);color:white" onclick="login('Antonin')">
+    <span class="badge" id="badge_antonin"></span>
+   <span class="avatar">👦🎸</span>Antonin
+  </button>
+
+  <button class="login-btn" style="background:linear-gradient(135deg,#4CAF50,#8BC34A);color:white" onclick="login('Clément')">
+   <span class="badge" id="badge_clement"></span> 
+   <span class="avatar">👦🥋</span>Clément
+  </button>
+
+  <button class="login-btn" style="background:linear-gradient(135deg,#FF9800,#FF5722);color:white" onclick="login('Diego')">
+    <span class="badge" id="badge_diego"></span>
+   <span class="avatar">👦⚽</span>Diego
+  </button>
+
+  <button class="login-btn" style="background:linear-gradient(135deg,#9C27B0,#673AB7);color:white" onclick="login('Jérémie')">
+   <span class="badge" id="badge_jeremie"></span>
+   <span class="avatar">👦🥐</span>Jérémie
+  </button>
+
+  <button class="login-btn" style="background:linear-gradient(135deg,#FF5722,#E64A19);color:white" onclick="login('parent')">
+   <span class="badge" id="badge_parents"></span> 
+   <span class="avatar">👩🏻‍🤝‍👨🏼🚑</span>Mélanie & Yann
+  </button>
+ 
+  </div>
+</div>
+
+<!-- MODAL CODE ADMIN -->
+<div class="admin-modal" id="adminModal">
+  <div class="admin-modal-box">
+    <h3>🔐 Zone Admin</h3>
+    <p>Entrez le code pour accéder à la configuration</p>
+    <div class="pin-display">
+      <div class="pin-dot" id="dot0"></div>
+      <div class="pin-dot" id="dot1"></div>
+      <div class="pin-dot" id="dot2"></div>
+      <div class="pin-dot" id="dot3"></div>
+     
+    </div>
+    <div class="pin-error" id="pinError"></div>
+    <div class="pin-grid">
+      <button class="pin-btn" onclick="pinPress('1')">1</button>
+      <button class="pin-btn" onclick="pinPress('2')">2</button>
+      <button class="pin-btn" onclick="pinPress('3')">3</button>
+      <button class="pin-btn" onclick="pinPress('4')">4</button>
+      <button class="pin-btn" onclick="pinPress('5')">5</button>
+      <button class="pin-btn" onclick="pinPress('6')">6</button>
+      <button class="pin-btn" onclick="pinPress('7')">7</button>
+      <button class="pin-btn" onclick="pinPress('8')">8</button>
+      <button class="pin-btn" onclick="pinPress('9')">9</button>
+      <button class="pin-btn" onclick="pinClear()" style="font-size:0.9rem">Effacer</button>
+      <button class="pin-btn" onclick="pinPress('0')">0</button>
+      <button class="pin-btn" onclick="pinDelete()" style="font-size:1.2rem">⌫</button>
+    </div>
+    <div class="pin-cancel" onclick="closeAdminModal()">Annuler</div>
+  </div>
+</div>
+
+<canvas id="confetti-canvas"></canvas>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL JOB -->
+<div class="modal-overlay" id="jobModal">
+  <div class="modal">
+    <h3 id="modalTitle"></h3>
+    <div class="modal-sub" id="modalSub"></div>
+    <div class="modal-btns" id="modalBtns"></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav" id="mainNav" style="display:none">
+  <div class="nav-title">
+    <span>⭐ Semaine Famille</span>
+    <div class="nav-user">
+      <button id="installBtn" onclick="installApp()" style="display:none;background:rgba(255,255,255,0.2);border:none;color:white;padding:4px 10px;border-radius:20px;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.75rem;cursor:pointer;margin-right:6px">📲 Installer</button>
+      <span class="nav-user-name" id="navUserName"></span>
+      <button class="nav-logout" onclick="logout()">Changer</button>
+    </div>
+  </div>
+  <div class="nav-tabs" id="navTabs">
+    <button class="nav-tab active" onclick="showPage('accueil')">🏠 Accueil</button>
+    <button class="nav-tab" onclick="showPage('present')">👥 Présences</button>
+    <button class="nav-tab" onclick="showPage('menu')">🍽️ Menu</button>
+    <button class="nav-tab" onclick="showPage('courses')">🛒 Courses</button>
+    <button class="nav-tab" onclick="showPage('taches')">✅ Tâches</button>
+    <button class="nav-tab" id="jobTab" onclick="showPage('job')">📅 Job</button>
+    <button class="nav-tab" id="adminTab" onclick="requestAdmin()">⚙️ Admin</button>
+    <button class="nav-tab" onclick="location.href='CFF.html'">🚆 CFF</button>
+    <button class="nav-tab" onclick="location.href='magicpass.html'">✨ MAGIC</button>
+   <button class="nav-tab" onclick="location.href='Agenda.html'">👀 Agenda</button>
+   <button class="nav-tab" onclick="location.href='VACANCES.html'">🌴 VACANCES</button>
+    
+
+
+ 
+  </div>
+</div>
+
+<!-- ACCUEIL -->
+<div class="page active" id="page-accueil">
+  <div id="celebration-banner"></div>
+  <div class="screen1-hero">
+    <h1 id="accueil-title">⭐ Bonjour !</h1>
+    <p id="accueil-sub">Organisation de la famille</p>
+  </div>
+  <div class="quick-nav" id="quick-nav-grid">
+    <button class="quick-btn" onclick="showPage('present')"><span class="icon">👥</span>Présences</button>
+    <button class="quick-btn" onclick="showPage('menu')"><span class="icon">🍽️</span>Menu</button>
+    <button class="quick-btn" onclick="showPage('courses')"><span class="icon">🛒</span>Courses</button>
+    <button class="quick-btn" onclick="showPage('taches')"><span class="icon">✅</span>Tâches</button>
+    <button class="quick-btn" onclick="location.href='CFF.html'"><span class="icon">🚆</span>CFF</button>
+    <button class="quick-btn" onclick="location.href='magicpass.html'"><span class="icon">✨🏔️</span>MAGIC</button>
+    <button class="quick-btn" onclick="location.href='Agenda.html'"><span class="icon">👀</span>Agenda</button>
+   <button class="quick-btn" onclick="location.href='VACANCES.html'"><span class="icon">🌴</span>VACANCES</button>
+
+
+
+  </div>
+</div>
+
+<!-- PRÉSENCES -->
+
+<div class="page" id="page-present">
+  <div style="display:flex;gap:8px;margin-bottom:12px">
+    <button class="btn btn-primary" onclick="savePresences()" style="flex:1;margin:0">💾 Enregistrer</button>
+  
+  </div>
+  <div id="present-loading" class="loading"><div class="spinner"></div>Chargement...</div>
+  <div id="present-content" style="display:none"></div>
+  <div style="display:flex;gap:8px;margin-top:12px">
+    <button class="btn btn-primary" onclick="savePresences()" style="flex:1;margin:0">💾 Enregistrer</button>
+  </div>
+</div>
+
+
+<!-- MENU -->
+<div class="page" id="page-menu">
+
+  <div id="menu-loading" class="loading"><div class="spinner"></div>Chargement...</div>
+  <div id="menu-content" style="display:none"></div>
+  <button class="btn btn-primary" onclick="saveMenu()">💾 Enregistrer le menu</button>
+ 
+</div>
+
+<!-- COURSES -->
+<div class="page" id="page-courses">
+  <div class="inner-tabs">
+    <button class="inner-tab active" onclick="showListe('generale',this)">🛒 Générale</button>
+    <button class="inner-tab" onclick="showListe('landi',this)">🏪 Landi</button>
+    <button class="inner-tab" onclick="showListe('france',this)">🇫🇷 France</button>
+  </div>
+  <div class="card">
+    <div class="input-row">
+      <input type="text" id="input-course" placeholder="Ajouter un produit..." onkeypress="if(event.key==='Enter')addCourse()">
+      <button class="btn btn-primary btn-small" onclick="addCourse()" style="width:auto;margin:0;white-space:nowrap">+ Ajouter</button>
+    </div>
+    <div id="courses-list"><div class="loading">Chargement...</div></div>
+    <button class="btn btn-danger btn-small" onclick="clearListe()" style="margin-top:8px;width:100%">🗑️ Vider cette liste</button>
+  </div>
+</div>
+
+<!-- TÂCHES -->
+<div class="page" id="page-taches">
+  <div id="taches-content"><div class="loading"><div class="spinner"></div>Chargement...</div></div>
+</div>
+
+<!-- JOB -->
+<div class="page" id="page-job">
+  <div class="card">
+    <div class="legende">
+  <div class="legende-item"> 
+      <img src="image/Jeremie.png" class="legend-icon"> Jérémie </div>
+
+  <div class="legende-item">
+    <img src="image/Melanie.png" class="legend-icon"> Mélanie </div>
+
+  <div class="legende-item">
+    <img src="image/Yann.png" class="legend-icon"> Yann </div>
+      
+</div>
+    <div class="cal-header">
+      <button class="btn btn-small" onclick="changeMonth(-1)" style="background:var(--violet);color:white;width:auto">◀</button>
+      <div class="cal-month" id="cal-month-title"></div>
+      <button class="btn btn-small" onclick="changeMonth(1)" style="background:var(--violet);color:white;width:auto">▶</button>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+<div class="horaires-container">
+
+
+  <div class="horaire-box">
+    <h3>Alessia</h3>
+    <img src="horaires/Alessia.png" class="horaire-img">
+  </div>
+
+  <div class="horaire-box">
+    <h3>Diego</h3>
+    <img src="horaires/diego.png" class="horaire-img">
+  </div>
+
+  <div class="horaire-box">
+    <h3>Clément</h3>
+    <img src="horaires/horaire_clement.jpeg" class="horaire-img">
+  </div>
+
+  <div class="horaire-box">
+    <h3>Antonin</h3>
+    <img src="horaires/antonin.png" class="horaire-img">
+  </div>
+
+</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="page" id="page-admin">
+ 
+
+  <div class="card">
+    <div class="card-title">📌 Tâche ponctuelle</div>
+    <div class="input-row">
+      <select id="ponct-enfant">
+        <option>Alessia</option>
+        <option>Antonin</option>
+        <option>Clément</option>
+        <option>Diego</option>
+        <option>Jérémie</option>
+        <option>Mél & Yann</option>
+      </select>
+    </div>
+    <div class="input-row">
+      <input type="text" id="ponct-tache" placeholder="Nom de la tâche ponctuelle...">
+    </div>
+    <div class="input-row">
+      <input type="date" id="ponct-date" style="font-family:'Nunito',sans-serif;padding:10px 12px;border:2px solid #e0d0e8;border-radius:10px;font-size:0.95rem;font-weight:600;width:100%">
+    </div>
+    <button class="btn btn-primary" onclick="saveTachePonctuelle()">📌 Ajouter cette tâche</button>
+    <div id="ponct-list" style="margin-top:12px"></div>
+  </div>
+ 
+  <div class="card">
+    <div class="card-title">👁️ Vue enfant 👀— Aujourd'hui</div>
+    <div class="inner-tabs" id="preview-tabs">
+      <button class="inner-tab active" onclick="showPreviewEnfant('Alessia',this)">Alessia</button>
+      <button class="inner-tab" onclick="showPreviewEnfant('Antonin',this)">Antonin</button>
+      <button class="inner-tab" onclick="showPreviewEnfant('Clément',this)">Clément</button>
+      <button class="inner-tab" onclick="showPreviewEnfant('Diego',this)">Diego</button>
+      <button class="inner-tab" onclick="showPreviewEnfant('Jérémie',this)">Jérémie</button>
+      <button class="inner-tab" onclick="showPreviewEnfant('Mél & Yann',this)">Mél & Yann</button>
+    </div>
+    <div id="preview-content"><div class="loading">Chargement...</div></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
