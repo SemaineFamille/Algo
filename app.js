@@ -485,6 +485,9 @@ function login(user) {
   if (!isParent) {
     loadTaches();
   }
+   if (typeof initGamification === "function") {
+  initGamification();
+}
 }
 
 function logout() {
