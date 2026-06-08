@@ -974,7 +974,10 @@ async function addCourse() {
   await loadCourses(currentListe);
 }
 
-async function deleteCourse(idx, ingredient) {
+async function deleteCourse(idx) {
+
+  const ingredient = coursesData[currentListe][idx];
+
   await apiCall({
     action: 'supprimer',
     sheet: 'COURSES',
@@ -982,9 +985,7 @@ async function deleteCourse(idx, ingredient) {
     liste: currentListe
   });
 
-  if (coursesData[currentListe]) {
-    coursesData[currentListe].splice(idx, 1);
-  }
+  coursesData[currentListe].splice(idx, 1);
 
   renderCourses(currentListe);
   showToast('🗑️ Supprimé');
@@ -2276,7 +2277,10 @@ async function loadPonctuelles() {
           </span>
         </div>
       </div>
-      <button class="btn-delete" onclick="deletePonctuelle(${JSON.stringify(i.tache)}, ${JSON.stringify(i.enfant)}, ${JSON.stringify(i.date)})">✕</button>
+      <button class="btn-delete"
+        onclick="deleteCourse(${i})">
+  ✕
+</button>
     </div>
   `).join('');
 }
