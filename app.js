@@ -2349,14 +2349,15 @@ function renderPreviewParents() {
     return etat && (etat.etat || '').trim() === 'Fait';
   });
 
-  const nonFaites = toutesLesTaches.filter(t => {
-    const etat = tachesData.find(td =>
-      td.tache === t.tache &&
-      td.enfant === enfant &&
-      td.jour === t.jourReel
-    );
-    return !etat || (etat.etat || '').trim() !== 'Fait';
-  });
+const nonFaites = toutesLesTaches.filter(t => {
+  const etat = tachesData.find(td =>
+    td.tache === t.tache &&
+    td.jour === t.jourReel &&
+    (td.enfant === enfant || enfant.includes(td.enfant) || td.enfant.includes(enfant))
+  );
+
+  return !etat || (etat.etat || '').trim() !== 'Fait';
+});
 
   let html = `
     <p style="font-size:0.85rem;color:var(--text-light);font-weight:600;margin-bottom:12px">
