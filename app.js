@@ -1081,22 +1081,34 @@ async function loadBadges() {
 
     profils.forEach(nom => {
 
-      const tachesDuJour =
-        getToutesLesTachesEnfant(nom, jour, today) || [];
+  const tachesDuJour =
+    getToutesLesTachesEnfant(nom, jour, today) || [];
 
-      const nonFaites = tachesDuJour.filter(t => {
-        const fait = tachesData.find(td =>
-          td.tache === t.tache &&
-          td.enfant === nom &&
-          td.jour === t.jourReel &&
-          (td.etat || '').trim() === 'Fait'
-        );
+  const tachesRetard =
+    getTachesEnRetard(nom) || [];
 
-        return !fait;
-      });
+  const ponctuellesRetard =
+    getPonctuellesEnRetard(nom) || [];
 
-      counts[nom] = nonFaites.length;
-    });
+  const toutes = [
+    ...tachesDuJour,
+    ...tachesRetard,
+    ...ponctuellesRetard
+  ];
+
+  const nonFaites = toutes.filter(t => {
+    const fait = tachesData.find(td =>
+      td.tache === t.tache &&
+      td.enfant === nom &&
+      td.jour === t.jourReel &&
+      (td.etat || '').trim() === 'Fait'
+    );
+
+    return !fait;
+  });
+
+  counts[nom] = nonFaites.length;
+});
 
     updateBadges(counts);
   })();
