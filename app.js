@@ -1068,19 +1068,30 @@ async function loadBadges() {
     const today = formatDateYYYYMMDD(new Date());
     const { jour } = getJourFromYMD(today);
 
-    const profils = ['Alessia', 'Antonin', 'Clément', 'Diego', 'Jérémie', 'Mél & Yann'];
+    const profils = [
+      'Alessia',
+      'Antonin',
+      'Clément',
+      'Diego',
+      'Jérémie',
+      'Mél & Yann'
+    ];
+
     const counts = {};
 
     profils.forEach(nom => {
-      const taches = getToutesLesTachesEnfant(nom, jour, today);
 
-      const nonFaites = taches.filter(t => {
+      const tachesDuJour =
+        getToutesLesTachesEnfant(nom, jour, today) || [];
+
+      const nonFaites = tachesDuJour.filter(t => {
         const fait = tachesData.find(td =>
           td.tache === t.tache &&
           td.enfant === nom &&
           td.jour === t.jourReel &&
           (td.etat || '').trim() === 'Fait'
         );
+
         return !fait;
       });
 
@@ -2110,9 +2121,21 @@ function closeModal() {
 ========================================================= */
 function showAdminEnfant(enfant, btn) {
   currentAdminEnfant = enfant;
-  document.querySelectorAll('#admin-tabs .inner-tab').forEach(t => t.classList.remove('active'));
+  currentPreviewEnfant = enfant;
+
+  document
+    .querySelectorAll('#admin-tabs .inner-tab')
+    .forEach(t => t.classList.remove('active'));
+
   if (btn) btn.classList.add('active');
+
   renderAdminForm();
+
+  if (enfant === 'Mél & Yann') {
+    renderPreviewParents();
+  } else {
+    renderPreview(enfant);
+  }
 }
 
 function renderAdminForm() {
