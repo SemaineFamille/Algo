@@ -1124,8 +1124,33 @@ async function loadBadges() {
    HELPERS TÂCHES
 ========================================================= */
 function getTacheIcon(label) {
-  return TACHES_FIXES.find(t => t.label === label)?.icon || '📋';
+
+  const recur = TACHES_RECURRENTES.find(
+    t => t.tache === label
+  );
+
+  if (recur?.icon) {
+    return recur.icon;
+  }
+
+  const parent = TACHES_PARENTS.find(
+    t => t.label === label
+  );
+
+  if (parent?.icon) {
+    return parent.icon;
+  }
+
+  return '📋';
 }
+const ICONES_TACHES = {
+  'Défaire ton lit': '🛏️',
+  'Vider le lave-vaisselle': '🍽️',
+  'Sortir les poubelles': '🗑️',
+  'Ranger ta chambre': '🧹',
+  'Aspirateur': '🧼',
+  'Lessive': '🧺'
+};
 
 function isTacheRecurrenteActive(tache, dateStr) {
   const today = new Date((dateStr || formatDateYYYYMMDD()) + 'T00:00:00');
