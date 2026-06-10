@@ -240,10 +240,10 @@ const TACHES_RECURRENTES = [
   { personne: 'Antonin', tache: 'Défaire ton lit', icon: '🛏️', dateDebut: '2026-05-29', frequence: 3 },
   { personne: 'Jérémie', tache: 'Défaire ton lit', icon: '🛏️', dateDebut: '2026-05-29', frequence: 3 },
   { personne: 'Mél & Yann', tache: 'Défaire ton lit', icon: '🛏️', dateDebut: '2026-05-15', frequence: 2 },
-  { personne: 'Alessia', tache: 'Monter ta lessive', icon: '👕', dateDebut: '2026-06-04', frequence: 1 },
-   { personne: 'Clément', tache: 'Monter ta lessive', icon: '👕', dateDebut: '2026-06-04', frequence: 1 },
-   { personne: 'Antonin', tache: 'Mettre ta lessive à la buanderie', icon: '👕', dateDebut: '2026-06-04', frequence: 1 },
-   { personne: 'Jérémie', tache: 'Monter ta lessive', icon: '👕', dateDebut: '2026-06-04', frequence: 1 }
+  { personne: 'Alessia', tache: 'Monter ta lessive', icon: '👕', dateDebut: '2026-06-11', frequence: 1 },
+   { personne: 'Clément', tache: 'Monter ta lessive', icon: '👕', dateDebut: '2026-06-11', frequence: 1 },
+   { personne: 'Antonin', tache: 'Mettre ta lessive à la buanderie', icon: '👕', dateDebut: '2026-06-11', frequence: 1 },
+   { personne: 'Jérémie', tache: 'Monter ta lessive', icon: '👕', dateDebut: '2026-06-11', frequence: 1 }
 ];
 
 const TACHES_PARENTS = [
