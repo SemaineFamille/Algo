@@ -1129,17 +1129,13 @@ function getTacheIcon(label) {
     t => t.tache === label
   );
 
-  if (recur?.icon) {
-    return recur.icon;
-  }
+  if (recur?.icon) return recur.icon;
 
   const parent = TACHES_PARENTS.find(
     t => t.label === label
   );
 
-  if (parent?.icon) {
-    return parent.icon;
-  }
+  if (parent?.icon) return parent.icon;
 
   return '📋';
 }
